@@ -1,5 +1,5 @@
 { ... }: {
-  perSystem = { pkgs, config, ... }:
+  perSystem = { ... }:
     let crateName = "finch";
     in {
       # declare projects

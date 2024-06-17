@@ -32,36 +32,26 @@
           # shorthand for accessing this crate's outputs
           # you can access crate outputs under `config.nci.outputs.<crate name>` (see documentation)
           crateOutputs = config.nci.outputs."finch";
-
-          # craneLib = inputs.crane.mkLib pkgs;
-          # src = craneLib.cleanCargoSource ./.;
         in {
           treefmt = {
             projectRootFile = "flake.nix";
             programs.nixfmt.enable = true;
             programs.rustfmt.enable = true;
+            programs.deadnix.enable = true;
           };
 
           formatter = config.treefmt.build.wrapper;
 
-          pre-commit.settings = let
-            simplehook = cmd: {
-              enable = true;
-              name = cmd;
-              description = "Run ${cmd}";
-              entry = cmd;
-              pass_filenames = false;
+          pre-commit = {
+            check.enable = false;
+            settings = {
+              hooks.nixfmt.enable = true;
+              hooks.rustfmt.enable = true;
+              hooks.clippy.enable = true;
+              hooks.cargo-check.enable = true;
+              # hooks.deadnix.enable = true;
             };
-          in {
-            hooks.nixfmt.enable = true;
-            hooks.rustfmt.enable = true;
-            hooks.deadnix.enable = true;
-            hooks.cargocheck = simplehook "cargo check";
-            hooks.cargoclippy = simplehook "cargo clippy";
-            hooks.cargotest = simplehook "cargo test";
           };
-
-          # checks = { finch-fmt = craneLib.cargoFmt { inherit src; }; };
 
           # export the crate devshell as the default devshell
           devShells.default = crateOutputs.devShell.overrideAttrs (old: {
