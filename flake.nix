@@ -49,13 +49,13 @@
               hooks.rustfmt.enable = true;
               hooks.clippy.enable = true;
               hooks.cargo-check.enable = true;
-              # hooks.deadnix.enable = true;
+              hooks.deadnix.enable = true;
             };
           };
 
           # export the crate devshell as the default devshell
           devShells.default = crateOutputs.devShell.overrideAttrs (old: {
-            packages = (old.packages or [ ]) ++ [ pkgs.protobuf_27 ];
+            packages = (old.packages or [ ]) ++ [ pkgs.protobuf_27 pkgs.bacon ];
             shellHook = ''
               ${old.shellHook or ""}
               ${config.pre-commit.installationScript}
