@@ -31,11 +31,8 @@ jobs:
       - name: Build
         run: cargo build --verbose
 
-  coverage:
+  test:
     runs-on: ubuntu-latest
-    container:
-      image: xd009642/tarpaulin:develop-nightly
-      options: --security-opt seccomp=unconfined
     steps:
       - uses: actions/checkout@v4
       - name: Cache
@@ -49,10 +46,19 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Generate code coverage
-        run: cargo tarpaulin --verbose --out xml
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: llvm-tools-preview
+      - uses: taiki-e/install-action@cargo-llvm-cov
+      - uses: taiki-e/install-action@nextest
+      - name: Collect coverage data (including doctests)
+        run: |
+          cargo llvm-cov --no-report nextest
+          cargo llvm-cov --no-report --doc
+          cargo llvm-cov report --doctests --lcov --output-path lcov.info
       - name: Upload code coverage
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov.info
 
