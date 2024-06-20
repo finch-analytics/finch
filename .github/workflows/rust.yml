@@ -17,26 +17,26 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/.crates2.json
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
     - name: Install Rust toolchain
       uses: dtolnay/rust-toolchain@stable
-    - name: Build
-      run: cargo build --verbose
     - name: Install tarpaulin
       run: cargo install cargo-tarpaulin
+    - name: Build
+      run: cargo build --verbose
     - name: Generate code coverage
       run: cargo tarpaulin --verbose --out xml
     - name: Upload code coverage
       uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-    - name: Cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cargo/bin/
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-          target/
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-
