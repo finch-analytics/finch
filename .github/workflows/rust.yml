@@ -28,6 +28,10 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
+      - name: Install protoc
+        uses: taiki-e/install-action@v2
+        with:
+          tool: protoc
       - name: Build
         run: cargo build --verbose
 
@@ -51,6 +55,10 @@ jobs:
           components: llvm-tools-preview
       - uses: taiki-e/install-action@cargo-llvm-cov
       - uses: taiki-e/install-action@nextest
+      - name: Install protoc
+        uses: taiki-e/install-action@v2
+        with:
+          tool: protoc
       - name: Collect coverage data (including doctests)
         run: |
           cargo llvm-cov --no-report nextest
