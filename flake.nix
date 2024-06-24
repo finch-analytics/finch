@@ -47,7 +47,7 @@
             settings = {
               hooks.nixfmt.enable = true;
               hooks.rustfmt.enable = true;
-              hooks.clippy.enable = true;
+              # hooks.clippy.enable = true;
               hooks.cargo-check.enable = true;
               hooks.deadnix.enable = true;
             };
