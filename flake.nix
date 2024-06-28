@@ -55,12 +55,9 @@
 
           # export the crate devshell as the default devshell
           devShells.default = crateOutputs.devShell.overrideAttrs (old: {
-            packages = (old.packages or [ ]) ++ [
-              pkgs.protobuf_27
-              pkgs.bacon
-              pkgs.cargo-nextest
-              pkgs.cargo-tarpaulin
-            ];
+            packages = with pkgs;
+              (old.packages or [ ])
+              ++ [ bacon cargo-nextest cargo-tarpaulin grpcurl protobuf_27 ];
             shellHook = ''
               ${old.shellHook or ""}
               ${config.pre-commit.installationScript}
