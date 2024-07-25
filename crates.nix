@@ -1,5 +1,5 @@
 { ... }: {
-  perSystem = { ... }:
+  perSystem = { pkgs, ... }:
     let crateName = "finch";
     in {
       # use toolchain file
@@ -7,6 +7,8 @@
       # declare projects
       nci.projects."simple".path = ./.;
       # configure crates
-      nci.crates.${crateName} = { };
+      nci.crates.${crateName} = {
+        drvConfig = { mkDerivation = { buildInputs = [ pkgs.protobuf_27 ]; }; };
+      };
     };
 }
