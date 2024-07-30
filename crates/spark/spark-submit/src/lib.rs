@@ -1,4 +1,8 @@
-use std::{net::IpAddr, process::Command};
+#![feature(coverage_attribute)]
+use std::{
+    net::IpAddr,
+    process::{Child, Command, Stdio},
+};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct SparkSubmitClient {
@@ -20,6 +24,12 @@ impl SparkSubmitClient {
             .args(["--master", &self.master_address]);
 
         cmd
+    }
+
+    #[coverage(off)]
+    pub fn execute(&self, source_file: String) -> Result<Child, std::io::Error> {
+        let mut cmd = self.to_cmd();
+        cmd.stdout(Stdio::piped()).arg(source_file).spawn()
     }
 }
 
