@@ -61,6 +61,7 @@
                 cargo-nextest
                 cargo-tarpaulin
                 grpcurl
+                postgresql_16
                 protobuf_27
                 spark
               ];
