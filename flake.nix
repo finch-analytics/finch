@@ -62,6 +62,7 @@
                 cargo-tarpaulin
                 grpcurl
                 protobuf_27
+                spark
               ];
             shellHook = ''
               ${old.shellHook or ""}
