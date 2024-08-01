@@ -64,6 +64,7 @@
                 postgresql_16
                 protobuf_27
                 spark
+                sqlx-cli
               ];
             shellHook = ''
               ${old.shellHook or ""}
