@@ -12,10 +12,10 @@ name = "helloworld-client"
 path = "src/client.rs"
 
 [dependencies]
-tonic = "0.12.3"
-prost = "0.13.1"
-tokio = { version = "1.39.1", features = ["tracing", "full"] }
-sqlx = { version = "0.8.1", default-features = false, features = ["macros", "runtime-tokio", "tls-rustls", "postgres"] }
+tonic = "0.12"
+prost = "0.13"
+tokio = { version = "1.42", features = ["tracing", "full"] }
+sqlx = { version = "0.8", default-features = false, features = ["macros", "runtime-tokio", "tls-rustls", "postgres"] }
 
 [build-dependencies]
-tonic-build = "0.12.1"
+tonic-build = "0.12"
